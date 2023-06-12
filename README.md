@@ -2,7 +2,9 @@
 
 *name still tbd, I think I like TCART for "trading card augmented reality table" a bit better*
 
-**Play on a real table, with "real" cards, with all the conveniences of a digital card library.**
+**Play trading card games on a real table, with "real" cards, with all the conveniences of a digital card library.**
+
+(This doesn't work. Yet. Hopefully)
 
 The idea is to project card images onto pieces of white cardstock on a table, using a webcam above the table to track each card. Because the cards are managed digitally, it's easy to change decklists and use alternate card arts. In the future, features like computer-aided shuffling and searching can improve gameplay too!
 
