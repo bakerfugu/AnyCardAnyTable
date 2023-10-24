@@ -18,7 +18,8 @@ ARUCO_DICT = {
 }
 
 
-def show_markers(vs, arucoDict, arucoParams):
+def show_markers(vs, detector):
+
     # loop over the frames from the video stream
     while True:
         # grab the frame from the threaded video stream and resize it
@@ -26,7 +27,7 @@ def show_markers(vs, arucoDict, arucoParams):
         frame = vs.read()
         frame = imutils.resize(frame, width=1000)
         # detect ArUco markers in the input frame
-        (corners, ids, rejected) = cv2.aruco.detectMarkers(frame, arucoDict, parameters=arucoParams)
+        (corners, ids, rejected) = detector.detectMarkers(frame)
         # verify *at least* one ArUco marker was detected
         if len(corners) > 0:
             # flatten the ArUco IDs list
@@ -78,19 +79,22 @@ def ready_video(args):
         sys.exit(0)
     # load the ArUCo dictionary and grab the ArUCo parameters
     print("[INFO] detecting '{}' tags...".format(args["type"]))
-    arucoDict = cv2.aruco.Dictionary_get(ARUCO_DICT[args["type"]])
-    arucoParams = cv2.aruco.DetectorParameters_create()
+    # arucoDict = cv2.aruco.Dictionary_get(ARUCO_DICT[args["type"]])
+    arucoDict = cv2.aruco.getPredefinedDictionary(ARUCO_DICT[args["type"]])
+    arucoParams = cv2.aruco.DetectorParameters()
+    detector = cv2.aruco.ArucoDetector(arucoDict, arucoParams)
     # initialize the video stream and allow the camera sensor to warm up
     print("[INFO] starting video stream...")
     vs = VideoStream(src=0).start()
     time.sleep(2.0)
-    show_markers(vs, arucoDict, arucoParams)
+    show_markers(vs, detector)
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("-t", "--type", type=str,
-                    default="DICT_ARUCO_ORIGINAL",
+                    default="DICT_4X4_250",
+                    # default="DICT_ARUCO_ORIGINAL",
                     help="type of ArUCo tag to detect")
     args = vars(ap.parse_args())
     ready_video(args)
